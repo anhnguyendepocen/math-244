@@ -5,7 +5,7 @@ permalink: /syllabus/
 ---
 
 Statistical Learning is a field that ties together statistical theory and practice
-with the methods of machine learning have emerged in the last several decades.
+with the methods of machine learning that have emerged in the last several decades.
 
 This course is geared towards students with the following experience.
 
@@ -24,7 +24,7 @@ though knowledge of linear algebra is not necessary.
 ### Contact
 [Andrew Bray](https://andrewpbray.github.io)  
 Office: Library 304  
-Office hours: Tuesday 4-5, Thursday 3-4
+Office hours: Monday and Wednesday, 11 am - noon; Thursday 3:30 - 4:30 pm
 
 
 ### Textbook
@@ -47,14 +47,15 @@ be more traditional pen and paper and others are to be done with the computer
 using R.
 
 **Midterm I**  
-Friday, February 26 2016
+TBA
 
 **Midterm II**  
-Friday, April 8th (takehome)
+TBA
 
 **Final**  
-Takehome during finals week ([link]({{ site.baseurl }}/assets/week-13/final.html))
+Takehome during finals week
 
+<!--
 #### Project
 
 Your goal is to find a data set of interest to you and develop insight into it by applying the principles and techniques of statistical learning. This is a group project (3 students in a group) that has two deliverables: a single Rmd research report that is submitted via GitHub and a 10-15 minute presentation.
@@ -64,10 +65,7 @@ April 29th 1 pm: [Template]({{ site.baseurl }}/assets/week-13/project-template.h
 
 **Presentations**  
 April 27 and 29th in class
-
-
-
-
+-->
 
 
 ### General Timeline
