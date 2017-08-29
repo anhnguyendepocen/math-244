@@ -1,0 +1,72 @@
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+* * *
+
+## Part I: Introduction to R
+
+(optional) If you're new to R, please work through the lab in section 2.3 of your
+there is no need to include that code in your lab report.
+
+* * *
+
+## Part II: Boston Housing Data
+
+(based on exercise 10 on p. 56 of the book)
+
+To begin, load in the `Boston` data set. The `Boston` data set is part of the
+`MASS` library in R.
+
+```{r}
+library(MASS)
+```
+
+Now the data set is contained in the object `Boston`. Read about the data set.
+
+```{r}
+?Boston
+```
+
+1. How many rows are in this data set? How many columns? What do the rows and columns
+represent?
+
+2. Make some (2-3) pairwise scatterplots of the predictors (columns) in this data set.
+Describe your findings.
+
+3. Are any of the predictors associated with per capita crime rate? If so, explain
+the relationship.
+
+4. Are there any suburbs of Boston that appear to have particularly high crime rates?
+Tax rate? Pupil-teacher ratios? Comment on the range of each predictor.
+
+5. How many of the suburbs in this data set bound the Charles river?
+
+6. What is the median pupil-teacher ratio among the towns in this data set?
+
+7. If you want to build a model to predict the average value of a home based on
+the other variables, what is your output/response? What is your input?
+
+
+
+```{r, echo = FALSE, eval = FALSE}
+## Part II: Simulation
+
+R is terrific at simulating data from a model of your specifications. Say I want
+a model that expresses the idea that we have two sub-populations of whales that
+differ in their length and their coloration (measured by mean
+grayscale value). I can create my own data set for a hypothetical group of whales
+using the following. Please run each line one by one and consider the output of
+each (you can view each new object by clicking on it in the Environment pane).
+n_whales <- 40
+group <- rep(c(1, 2), each = n_whales/2)
+length_1 <- rnorm(n = n_whales/2, mean = 4.2, sd = .4)
+length_2 <- rnorm(n = n_whales/2, mean = 3.6, sd = .3)
+len <- c(length1, length2)
+color_1 <- rnorm(n = n_whales/2, mean = 4.2, sd = .4)
+
+x <- seq(0, 100, )
+```
+
+
+

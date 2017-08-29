@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Statistical Learning</title>
+    <description>An introduction to modern regression and machine learning techniques.
+</description>
+    <link>http://andrewpbray.github.io/math-243/</link>
+    <atom:link href="http://andrewpbray.github.io/math-243/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 31 Jan 2016 17:03:31 -0800</pubDate>
+    <lastBuildDate>Sun, 31 Jan 2016 17:03:31 -0800</lastBuildDate>
+    <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Week Two: Linear Regression</title>
+        <description>&lt;p&gt;This week we get a revisit Linear Regression and consider it through within
+the Statistical Learning framework.&lt;/p&gt;
+
+&lt;h2 id=&quot;monday&quot;&gt;Monday&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Guess my age: human vs statistical learning&lt;/li&gt;
+  &lt;li&gt;Reading: p. 59 - 63&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;PS 2&lt;/strong&gt;: TBA&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;wednesday&quot;&gt;Wednesday&lt;/h2&gt;
+
+&lt;h2 id=&quot;friday-lab&quot;&gt;Friday Lab&lt;/h2&gt;
+</description>
+        <pubDate>Mon, 01 Feb 2016 08:53:27 -0800</pubDate>
+        <link>http://andrewpbray.github.io/math-243/jekyll/update/2016/02/01/week02.html</link>
+        <guid isPermaLink="true">http://andrewpbray.github.io/math-243/jekyll/update/2016/02/01/week02.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+      <item>
+        <title>Week One: Foundations of Statistical Learning</title>
+        <description>&lt;p&gt;This week we get a sense of the problems that statistical learning can tackle 
+and establish a unified framework for the methodology.&lt;/p&gt;
+
+&lt;h2 id=&quot;monday&quot;&gt;Monday&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Guess my age: human vs statistical learning&lt;/li&gt;
+  &lt;li&gt;Reading: p. 1-16&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://andrewpbray.github.io/math-243/assets/week-01/ps-1.html&quot;&gt;PS 1&lt;/a&gt;: due Friday in class&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;For next time&lt;/strong&gt;:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=o8JKVadwAO0&quot;&gt;Labs with R Markdown Video&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://docs.google.com/a/reed.edu/forms/d/1N4i3NyidoMEG4LsKksf8pGZDWPRVpookldYqwVuV9_0/viewform?usp=send_form&quot;&gt;Survey&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;wednesday&quot;&gt;Wednesday&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Estimating f&lt;/li&gt;
+  &lt;li&gt;Reading: p. 17 - 42&lt;/li&gt;
+  &lt;li&gt;Why &lt;em&gt;square&lt;/em&gt; the residual? &lt;a href=&quot;http://www.johnmyleswhite.com/notebook/2013/03/22/modes-medians-and-means-an-unifying-perspective/&quot;&gt;Means, Medians, Modes: a Unifying Perspective&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;For next time&lt;/strong&gt;:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=DNS7i2m4sB0&quot;&gt;R Markdown in RStudio&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;friday-lab&quot;&gt;Friday Lab&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Lab 1: Intro to R (bring your laptop!)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 20 Jan 2016 08:53:27 -0800</pubDate>
+        <link>http://andrewpbray.github.io/math-243/jekyll/update/2016/01/20/week01.html</link>
+        <guid isPermaLink="true">http://andrewpbray.github.io/math-243/jekyll/update/2016/01/20/week01.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+  </channel>
+</rss>
