@@ -50,6 +50,8 @@ Whenever you complete a good chunk of work on the assignment, click the boxes ne
 
 Once you're done with the assignment, commit any final changes to files and click the green "push" arrow in the Git pane. This will send all of your commits to Github.
 
+* * *
+
 ## Materials to review
 
 #### Statistics
