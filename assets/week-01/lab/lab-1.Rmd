@@ -1,5 +1,4 @@
 ---
-title: "Lab 1: Intro to R"
 output: 
   html_document: 
     highlight: pygments
@@ -10,17 +9,7 @@ output:
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
-* * *
-
-## Part I: Introduction to R
-
-(optional) If you're new to R, please work through the lab in section 2.3 of your
-there is no need to include that code in your lab report.
-
-* * *
-
-## Part II: Boston Housing Data
-
+### This Bitter Earth
 (based on exercise 10 on p. 56 of the book)
 
 To begin, load in the `Boston` data set. The `Boston` data set is part of the
