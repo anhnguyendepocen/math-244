@@ -107,7 +107,7 @@ $$
 **Output**: A single vector of length $n$.
 
 $$
-Y = 
+y = 
  \begin{pmatrix}
   y_{1} \\
   y_{2} \\
@@ -120,7 +120,7 @@ $$
 **Model**: One simple $f$ would be a linear model on the transformed input.
 
 $$
-Y = \beta_0 + \beta_1 X_1^{*} + \beta_2 X_2^{*} + \ldots + \beta_m X_m^{*} + \epsilon
+y = \beta_0 + \beta_1 x_1^{*} + \beta_2 x_2^{*} + \ldots + \beta_m x_m^{*} + \epsilon
 $$
     
     
