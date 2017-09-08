@@ -170,7 +170,7 @@ $$
 ```{r, echo = FALSE}
 set.seed(28)
 x <- runif(20, 5, 35)
-df_pt <- data.frame(x = x, rnorm(length(x), mean = f(x), sd = 11))
+df_pt <- data.frame(x = x, y = rnorm(length(x), mean = f(x), sd = 11))
 fhat <- lm(y ~ x, data = df_pt)
 df_fhat <- data.frame(x = x, f = fhat$fit)
 p2 + geom_point(data = df_pt, aes(x = x, y = y), col = I("tomato")) +
