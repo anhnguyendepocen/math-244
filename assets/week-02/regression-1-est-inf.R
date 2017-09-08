@@ -3,7 +3,7 @@ n <- 60
 beta_0 <- 12
 beta_1 <- .7
 sigma <- 2
-x <- rnorm(n, mean = 20, sd = 3) # generate arbitrary x's
+x <- rnorm(n, mean = 20, sd = 3)
 
 plot(20, 25, xlim = c(12, 28), ylim = c(17, 35), ylab = "y", xlab = "x", type = "n") # set up an empty plot
 abline(a = beta_0, b = beta_1, col = "goldenrod", lwd = 2) # add mean function
@@ -11,7 +11,7 @@ abline(a = beta_0, b = beta_1, col = "goldenrod", lwd = 2) # add mean function
 ## ---- eval=TRUE, echo=FALSE----------------------------------------------
 plot(20, 25, xlim = c(12, 28), ylim = c(17, 35), ylab = "y", xlab = "x", type = "n") # set up an empty plot
 
-# generate y
+# generate data
 f_mean <- beta_0 + beta_1 * x # mean function
 f_data <- f_mean + rnorm(n, mean = 0, sd = sigma) # data generating function
 
