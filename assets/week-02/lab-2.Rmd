@@ -1,12 +1,11 @@
 ---
-title: "Lab 2: Linear Regression"
 output: 
   html_document: 
     highlight: pygments
     theme: spacelab
 ---
 
-### Fijian Earthquakes
+### An Island Never Cries
 
 1000 large seimic events around Fiji have been collected in a data set called
 `quakes` that is built into R.  You can learn more about it with the following
