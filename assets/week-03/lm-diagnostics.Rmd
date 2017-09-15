@@ -179,16 +179,8 @@ mean(capture)
 ```
 
 
-## Activity
-
-With a partner (there needs to be one computer between you), choose one of the
-following components of the linear model to break, then assess what goes wrong.
+## What else can go wrong?
 
 1. Normality of errors
 2. Independence of errors
 3. Linear trend in mean function
-
-
-You can build off the code used in these slides:  
-
-`andrewpbray.github.io/math-243/assets/week_03/lm-diagnostics.Rmd`
