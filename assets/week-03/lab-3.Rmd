@@ -1,30 +1,27 @@
 ---
-title: "Lab 3: Regression Prediction Competition"
 output: 
   html_document: 
     highlight: pygments
     theme: spacelab
 ---
 
-### Communities and Crime
+### In the hot New Jersey night
 
 Your objective is to build a multiple regression model that predicts the amount
 of violent crime in a community as a function of other characteristics of 
 those communities. You will construct your model using a training data set with
 information on over 100 variables recorded for 1000 communities. I've held back
-the data on 800 communities; this will server as the test data set for assessing
-the predictive accuracy of your model. Your model will be due at the end of the 
-day on Tuesday, then Wednesday in class we'll see how each of the models did in
-terms of test MSE.
+the data on 200 communities; this will server as the test data set for assessing
+the predictive accuracy of your model. Your model will be due by noon on Tuesday.
 
-The main components of this lab are two R functions, described below, but I suggest you 
-consider the following as you go through the model building process.
+The main components of this lab are two R functions, described below, but
+consider and record the following as you go through the model building process.
 
 * * *
 
 #### 1. Understanding the data provenance
 
-Inside the assignment repo is a file called `crime-codebook.txt`. Read through
+A codebook for the data can be found [here](http://andrewpbray.github.io/data/crime-codebook.txt). Read through
 that and jot down any predictors that you expect to have a strong association with
 violent crime - these will serve as a good jumping off point. You'll notice there
 are some variables that have lots of missing data. I recommend that you don't
@@ -37,7 +34,11 @@ This data set is far too large to make a full pairs plot, so start off looking a
 the pairwise relationships between the response and the predictors you expect will
 be useful. Do these relationships look strong/weak? Linear/non-linear? Does it
 seem like a transformation would be useful? To read in the data, you can use
-`read.csv()`.
+
+```{r eval = FALSE}
+d <- read.csv("http://andrewpbray.github.io/data/crime-train.csv")
+```
+
 
 
 #### 3. Model building
@@ -47,7 +48,7 @@ transformations, polynomials, and interaction terms. You can compare predictive
 power of candidate models using several tools including statistics that penalize
 for complexity ($R^2_{adj}$ and RSE) as well as the F-test (discussed in Ch. 3 of
 the book). Also, if there is multicollinearity between your predictors, that's
-a sign some of them can be removed.
+a sign that some of them can be removed.
 
 
 #### 4. Model diagnostics
@@ -64,7 +65,7 @@ constant variance, linear trend).
 
 #### 1. Fitting the model
 
-Please write a function that takes the training data and the outputs an `lm` object.
+Please write a function that takes the training data as input and then outputs an `lm` object.
 It should be of the form,
 
 ```{r eval = FALSE}
@@ -82,8 +83,8 @@ group_A_fit <- function(training_data) {
 
 #### 2. Computing MSE
 
-Please write a function that takes as imput the output from `group_A_fit` and 
-a data set, and returns the MSE.
+Please write a function that takes as input the output from `group_A_fit` and 
+a data set, and returns the MSE. (hint: there is a `predict()` function that may be helpful.)
 
 ```{r}
 group_A_MSE <- function(model, data) {
