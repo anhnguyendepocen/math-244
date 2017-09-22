@@ -1,0 +1,94 @@
+---
+title: "Results II"
+output:
+  ioslides_presentation:
+    incremental: true
+---
+
+```{r, include = FALSE}
+source("test-lab-3.R")
+library(knitr)
+library(tidyverse)
+opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+    
+
+## Training MSE
+
+```{r fig.align='center'}
+results %>%
+  filter(setting == "train") %>%
+  ggplot(aes(x = reorder(group, MSE), 
+             y = MSE, 
+             shape = model_type)) + 
+  geom_point(size = 3) +
+  ylim(c(0, .03)) +
+  xlab("Group") + 
+  ylab("train MSE") + 
+  theme(text = element_text(size = 16)) +
+  scale_shape_manual(values = c(1, 16)) +
+  theme_bw()
+```
+
+
+## Testing MSE
+
+```{r fig.align='center'}
+results %>%
+  filter(setting == "test") %>%
+  ggplot(aes(x = reorder(group, MSE), 
+             y = MSE, 
+             shape = model_type)) + 
+  geom_point(size = 3) +
+  xlab("Group") + 
+  ylab("train MSE") + 
+  theme(text = element_text(size = 16)) +
+  scale_shape_manual(values = c(1, 16)) +
+  theme_bw()
+```
+
+
+## Bias - Variance Tradeoff
+
+```{r fig.align='center'}
+results %>%
+  filter(setting == "train") %>%
+  ggplot(aes(x = p, 
+             y = MSE, 
+             shape = model_type)) + 
+  geom_point(size = 3) +
+  xlab("p") + 
+  ylab("train MSE") + 
+  theme(text = element_text(size = 16)) +
+  scale_shape_manual(values = c(1, 16)) +
+  theme_bw()
+```
+
+## Bias - Variance Tradeoff
+
+```{r fig.align='center'}
+results %>%
+  filter(setting == "test") %>%
+  ggplot(aes(x = p, 
+             y = MSE, 
+             shape = model_type)) + 
+  geom_point(size = 3) +
+  xlab("p") + 
+  ylab("test MSE") + 
+  theme(text = element_text(size = 16)) +
+  scale_shape_manual(values = c(1, 16)) +
+  theme_bw()
+```
+
+
+
+# Model Selection
+
+## Activity (also on your problem set) {.smaller}
+
+Using the `glmnet` package, construct a ridge regression and LASSO model to predict violent crime in the training data set. A description for how to use this package can be found in your book on page 251 and 255.
+
+a. How many variables were selected by the LASSO?
+b. What is the training MSE for ridge and LASSO using the optimal value of $\lambda$?
+b. If the MSE's differed, why do you think one is higher than the other in this setting?
+

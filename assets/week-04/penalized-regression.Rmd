@@ -20,7 +20,7 @@ names(credit)
 
 ```{r}
 m1 <- lm(Balance ~ ., data = credit)
-m1
+summary(m1)$coef
 ```
 
 
@@ -30,7 +30,7 @@ m1
 X <- model.matrix(Balance ~ ., data = credit)[, -1]
 X[1:2, ]
 Y <- credit$Balance
-lambdas <- seq(from = 1e-2, to = 1e4, length.out = 100)
+lambdas <- seq(from = 1e4, to = 1e-2, length.out = 100)
 library(glmnet)
 rm1 <- glmnet(x = X, y = Y, alpha = 0, lambda = lambdas, standardize = TRUE)
 dim(coef(rm1))
@@ -56,7 +56,7 @@ coef(rm1)[1:4, 100]
 ##
 
 ```{r, echo = FALSE, eval = FALSE}
-l <- log10(rep(lambdas, 3))
+l <- rev(rep(lambdas, 3))
 a <- as.matrix(coef(rm1)[2:4, ])
 v <- c(t(a[, seq(100, 1)]))
 coef <- as.factor(rep(row.names(coef(rm1))[2:4], each = length(lambdas)))
