@@ -10,7 +10,15 @@ output:
 ---
 
 #### Chapter 6 exercises
-2 (a, b), 3 - 6
+2 (a, b), 3, 4, 6, **challenge**: 5
 
-Number 5 is challenging, so I suggest working on this problem with other students and getting started ahead of time.
+#### Applied 
+
+Using the `glmnet` package, construct a ridge regression and LASSO model to predict violent crime in the training data set. A description for how to use this package can be found in your book on page 251 and 255.
+
+a. How many variables were selected by the LASSO?
+b. What are the training MSEs for ridge and LASSO using the optimal value of $\lambda$?
+b. If the MSEs differed, why do you think one is higher than the other in this setting?
+
+
 
