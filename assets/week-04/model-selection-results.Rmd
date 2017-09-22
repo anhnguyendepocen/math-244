@@ -58,6 +58,7 @@ results %>%
              shape = model_type)) + 
   geom_point(size = 3) +
   xlab("p") + 
+  xlim(3, 17) +
   ylab("train MSE") + 
   theme(text = element_text(size = 16)) +
   scale_shape_manual(values = c(1, 16)) +
@@ -74,6 +75,7 @@ results %>%
              shape = model_type)) + 
   geom_point(size = 3) +
   xlab("p") + 
+  xlim(3, 17) +
   ylab("test MSE") + 
   theme(text = element_text(size = 16)) +
   scale_shape_manual(values = c(1, 16)) +
