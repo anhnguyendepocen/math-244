@@ -1,0 +1,107 @@
+---
+title: "Results III"
+output:
+  ioslides_presentation:
+    incremental: true
+---
+
+```{r, include = FALSE}
+source("../week-04/test-lab-3.R")
+library(knitr)
+library(tidyverse)
+opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+
+```{r echo = FALSE}
+library(glmnet)
+d <- read.csv("http://andrewpbray.github.io/data/crime-train.csv")
+d <- select(d, -state, -county, -community, -communityname, -LemasSwornFT, -LemasSwFTPerPop, -LemasSwFTFieldOps, -LemasSwFTFieldPerPop, -LemasTotalReq, -LemasTotReqPerPop, -PolicReqPerOffic, -PolicPerPop, -RacialMatchCommPol, -PctPolicWhite, -PctPolicBlack, -PctPolicHisp, -PctPolicAsian, -PctPolicMinor, -OfficAssgnDrugUnits,  -NumKindsDrugsSeiz, -PolicAveOTWorked, -PolicCars, -PolicOperBudg, -LemasPctPolicOnPatr, -LemasGangUnitDeploy, -LemasPctOfficDrugUn, -PolicBudgPerPop)
+x <- model.matrix(ViolentCrimesPerPop~.,d)[,-1]
+y <- d$ViolentCrimesPerPop
+grid <- 10^seq(10,-2,length=100)
+
+# train
+
+# ridge model
+ridge.mod <- glmnet(x, y, alpha = 0, lambda = grid)
+ridge.cv.out <- cv.glmnet(x, y, alpha = 0)
+ridge.bestlam <- ridge.cv.out$lambda.min
+ridge.pred <- predict(ridge.mod, s = ridge.bestlam, x)
+ridge.trainingMSE <- mean((ridge.pred - y)^2)
+
+# lasso model
+lasso.mod <- glmnet(x, y, alpha = 1, lambda = grid)
+lasso.cv.out <- cv.glmnet(x, y, alpha = 1)
+lasso.bestlam <- lasso.cv.out$lambda.min
+lasso.pred <- predict(lasso.mod, s = lasso.bestlam, x)
+lasso.trainingMSE <- mean((lasso.pred - y)^2)
+
+# test
+test <- read.csv("/Users/andrewbray/Dropbox/Teaching/2017-fall/math-243/assets/week-04/crime-test.csv")
+test <- select(test, -state, -county, -community, -communityname, -LemasSwornFT, -LemasSwFTPerPop, -LemasSwFTFieldOps, -LemasSwFTFieldPerPop, -LemasTotalReq, -LemasTotReqPerPop, -PolicReqPerOffic, -PolicPerPop, -RacialMatchCommPol, -PctPolicWhite, -PctPolicBlack, -PctPolicHisp, -PctPolicAsian, -PctPolicMinor, -OfficAssgnDrugUnits,  -NumKindsDrugsSeiz, -PolicAveOTWorked, -PolicCars, -PolicOperBudg, -LemasPctPolicOnPatr, -LemasGangUnitDeploy, -LemasPctOfficDrugUn, -PolicBudgPerPop)
+x_test <- model.matrix(ViolentCrimesPerPop~.,test)[,-1]
+y_test <- test$ViolentCrimesPerPop
+
+# ridge
+ridge.pred <- predict(ridge.mod, s = ridge.bestlam, x_test)
+ridge.testMSE <- mean((ridge.pred - y_test)^2)
+
+# lasso
+lasso.pred <- predict(lasso.mod, s = lasso.bestlam, x_test)
+lasso.testMSE <- mean((lasso.pred - y_test)^2)
+```
+
+    
+
+## Training MSE
+
+```{r fig.align='center'}
+results %>%
+  filter(setting == "train") %>%
+  ggplot(aes(x = reorder(group, MSE), 
+             y = MSE, 
+             shape = model_type)) + 
+  geom_point(size = 3) +
+  ylim(c(0, .03)) +
+  xlab("Group") + 
+  ylab("train MSE") + 
+  theme(text = element_text(size = 16)) +
+  scale_shape_manual(values = c(1, 16)) +
+  geom_hline(yintercept = ridge.trainingMSE, color = "orchid") +
+  annotate("text", x = 8, y = ridge.trainingMSE - .001, label = "ridge") +
+  geom_hline(yintercept = lasso.trainingMSE, color = "darkgreen") +
+  annotate("text", x = 8, y = lasso.trainingMSE + .001, label = "lasso") +
+  theme_bw()
+```
+
+
+## Testing MSE
+
+```{r fig.align='center'}
+results %>%
+  filter(setting == "test") %>%
+  ggplot(aes(x = reorder(group, MSE), 
+             y = MSE, 
+             shape = model_type)) + 
+  geom_point(size = 3) +
+  xlab("Group") + 
+  ylab("train MSE") + 
+  theme(text = element_text(size = 16)) +
+  scale_shape_manual(values = c(1, 16)) +
+  geom_hline(yintercept = ridge.testMSE, color = "orchid") +
+  annotate("text", x = 8, y = ridge.testMSE - .0008, label = "ridge") +
+  geom_hline(yintercept = lasso.testMSE, color = "darkgreen") +
+  annotate("text", x = 8, y = lasso.testMSE + .0008, label = "lasso") +
+  theme_bw()
+```
+
+
+## Two penalties, compared
+
+```{r}
+par(mfrow = c(1, 2))
+plot(ridge.mod, xvar = "lambda", xlim = c(-5, 8), main = "Ridge")
+plot(lasso.mod, xvar = "lambda", xlim = c(-5, 0), main = "Lasso")
+```
+
