@@ -55,7 +55,7 @@ coef(rm1)[1:4, 100]
 
 ##
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE, eval = TRUE}
 l <- rev(rep(lambdas, 3))
 a <- as.matrix(coef(rm1)[2:4, ])
 v <- c(t(a[, seq(100, 1)]))

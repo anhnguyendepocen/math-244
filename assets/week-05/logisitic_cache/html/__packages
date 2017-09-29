@@ -1,0 +1,8 @@
+base
+ISLR
+ggplot2
+gridExtra
+dplyr
+bindrcpp
+RColorBrewer
+knitr
