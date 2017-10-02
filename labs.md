@@ -16,3 +16,4 @@ and using your college login.
 1. <a href = "{{ site.baseurl }}/assets/week-01/lab/lab-1.html" target = "_blank">Lab 1</a> (<a href = "{{ site.baseurl }}/assets/week-01/lab/lab-1-template.Rmd" target = "_blank">template</a>)
 2. <a href = "{{ site.baseurl }}/assets/week-02/lab-2.html" target = "_blank">Lab 2</a>
 3. <a href = "{{ site.baseurl }}/assets/week-03/lab-3.html" target = "_blank">Lab 3</a>
+3. <a href = "{{ site.baseurl }}/assets/week-05/lab-4.html" target = "_blank">Lab 4</a>
