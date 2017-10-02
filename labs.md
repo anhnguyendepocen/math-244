@@ -16,4 +16,4 @@ and using your college login.
 1. <a href = "{{ site.baseurl }}/assets/week-01/lab/lab-1.html" target = "_blank">Lab 1: Exploratory Data Analysis</a> (<a href = "{{ site.baseurl }}/assets/week-01/lab/lab-1-template.Rmd" target = "_blank">template</a>)
 2. <a href = "{{ site.baseurl }}/assets/week-02/lab-2.html" target = "_blank">Lab 2: Simple Regression and Simulation</a>
 3. <a href = "{{ site.baseurl }}/assets/week-03/lab-3.html" target = "_blank">Lab 3: Regression Competition</a>
-3. <a href = "{{ site.baseurl }}/assets/week-06/lab-4.html" target = "_blank">Lab 4: Classification</a>
+4. <a href = "{{ site.baseurl }}/assets/week-06/lab-4.html" target = "_blank">Lab 4: Classification</a>
