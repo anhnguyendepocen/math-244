@@ -1,99 +1,43 @@
----
-title: "Linear Discriminant Analysis II"
-output:
-  ioslides_presentation:
-    incremental: true
----
-
-```{r echo = FALSE}
+## ----echo = FALSE--------------------------------------------------------
 library(knitr)
 opts_chunk$set(warning = FALSE, message = FALSE)
-```
 
-```{r echo = FALSE}
+## ----echo = FALSE--------------------------------------------------------
 library(ISLR)
 m1 <- glm(default ~ balance, data = Default, family = binomial)
 my_log_pred <- ifelse(m1$fit < 0.5, "No", "Yes")
 conf_log <- table(my_log_pred, Default$default)
-```
 
-
-## Types of Errors {.build}
-
-Let's say you work for a bank and you're tasked with building a model that will
-predict whether someone will default given their credit history (i.e. balance).
-
-What could go wrong?
-
-```{r}
+## ------------------------------------------------------------------------
 conf_log
-```
 
-1. Deny credit to someone who would not have defaulted (false positive)
-2. Give credit to somone who will default (false negative)
-
-
-## {.build}
-
-What could we change to lower our false positive rate?
-
-```{r}
+## ------------------------------------------------------------------------
 my_log_pred <- ifelse(m1$fit < 0.6, "No", "Yes")
 conf_log_6 <- table(my_log_pred, Default$default)
 conf_log_6
 conf_log
-```
 
-
-## {.build}
-
-And if we raise the threshold a bit more?
-
-```{r}
+## ------------------------------------------------------------------------
 my_log_pred <- ifelse(m1$fit < 0.7, "No", "Yes")
 conf_log_7 <- table(my_log_pred, Default$default)
 conf_log_7
 conf_log_6
-```
 
-
-## False positive rate
-
-Of all of the actual negatives, how many did we declare positive?
-
-$$
-FPR = FP / (FP + TN)
-$$
-
-```{r}
+## ------------------------------------------------------------------------
 thresh <- c(0.5, 0.6, 0.7)
 FPR <- c(conf_log["Yes", "No"]/sum(conf_log[, "No"]),
         conf_log_6["Yes", "No"]/sum(conf_log_6[, "No"]),
         conf_log_7["Yes", "No"]/sum(conf_log_7[, "No"]))
 FPR
-```
 
-
-## True positive rate
-
-Of all of the actual positives, how many did we declare positive?
-
-$$
-TPR = TP / (TP + FN)
-$$
-
-```{r}
+## ------------------------------------------------------------------------
 thresh <- c(0.5, 0.6, 0.7)
 TPR <- c(conf_log["Yes", "Yes"]/sum(conf_log[, "Yes"]),
         conf_log_6["Yes", "Yes"]/sum(conf_log_6[, "Yes"]),
         conf_log_7["Yes", "Yes"]/sum(conf_log_7[, "Yes"]))
 TPR
-```
 
-
-## ROC curve {.vcenter .flexbox}
-
-```{r, fig.height=4.5, fig.width = 5.2, echo = FALSE}
+## ---- fig.height=4.5, fig.width = 5.2, echo = FALSE----------------------
 # ROC function
 library(ggplot2)
 plotROC <- function(model, nthresh = 1000) {
@@ -116,52 +60,28 @@ plotROC <- function(model, nthresh = 1000) {
 }
 
 plotROC(m1)
-```
 
-
-#
-
-# LDA with p > 1, K > 2
-
-## Example: Fisher's Irises {.flexbox .vcenter}
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Iris_versicolor_3.jpg/1920px-Iris_versicolor_3.jpg" alt="Iris" width="304" height="228">
-
-```{r}
+## ------------------------------------------------------------------------
 head(iris)
-```
 
-
-##  {.flexbox .vcenter}
-
-```{r echo = FALSE}
+## ----echo = FALSE--------------------------------------------------------
 library(ggplot2)
 
 p1 <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
   geom_point()
 
 p1
-```
 
-
-## {.build}
-
-LDA can be done more quickly using the `lda()` function in the `MASS` package.
-
-```{r}
+## ------------------------------------------------------------------------
 library(MASS)
 mlda <- lda(Species ~ Sepal.Length + Sepal.Width, data = iris)
 mlda_pred <- predict(mlda)
 (conf <- table(mlda_pred$class, iris$Species))
-```
 
-### Misclassification Rate
-```{r}
+## ------------------------------------------------------------------------
 (sum(conf) - sum(diag(conf)))/sum(conf)
-```
 
-##  {.flexbox .vcenter}
-```{r,echo=FALSE}
+## ----echo=FALSE----------------------------------------------------------
 # credit to dean young for this plot
 contour_data <- expand.grid(Sepal.Length = seq(min(iris$Sepal.Length), max(iris$Sepal.Length), length = 300),
   Sepal.Width = seq(min(iris$Sepal.Width), max(iris$Sepal.Width), length = 300))
@@ -176,50 +96,16 @@ p2 <- ggplot(data=iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 
 p2
 
-```
 
-
-
-## LDA summary {.build}
-
-- Focuses on modeling the predictors: $f_k(X) = \textrm{Normal}(\mu_k, \sum)$
-- Uses Bayes Rule to find the probabilities that an observation in is each class
-given the probabilities of all the $\pi_k f_k(X)$.
-
-**Note**
-
-- Allows each class to have its own $\mu_k$.
-- Constrains $\sum$ to be shared between the classes (inducing linear decision
-boundaries).
-
-*Question*
-
-On data set with 15 predictors and 1000 observations, would you worry more about
-the *bias* or the *variance* of this method?
-
-
-## Quadratic DA
-
-Focuses on modeling the predictors: $f_k(X) = \textrm{Normal}(\mu_k, \sum_k)$
-
-*Allow each class to have it's own covariance matrix*
-
-
-## QDA
-
-```{r}
+## ------------------------------------------------------------------------
 mqda <- qda(Species ~ Sepal.Length + Sepal.Width, data = iris)
 mqda_pred <- predict(mqda)
 (conf <- table(mqda_pred$class, iris$Species))
-```
 
-### Misclassification Rate
-```{r}
+## ------------------------------------------------------------------------
 (sum(conf) - sum(diag(conf)))/sum(conf)
-```
 
-##  {.flexbox .vcenter}
-```{r,echo=FALSE}
+## ----echo=FALSE----------------------------------------------------------
 # credit to dean young for this plot
 qda_predict <- data.frame(contour_data, Species=as.numeric(predict(mqda, contour_data)$class))
 
@@ -230,5 +116,4 @@ p3 <- ggplot(data=iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 
 p3
 
-```
 
