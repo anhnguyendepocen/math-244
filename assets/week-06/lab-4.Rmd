@@ -60,7 +60,7 @@ Some of these variables are NA for some countries.
 
 * * *
 
-**Challenge problem**: Using the code available in the slides titled `qda.Rmd`, construct an ROC curve for your logistic regression model. For an extra challenge, plot the ROC curves of all three models on the same plot.
+**Challenge problem**: Using the code available on the week 6 page, construct an ROC curve for your logistic regression model. For an extra challenge, plot the ROC curves of all three models on the same plot.
 
 [^1]: Based on an exercise of Cosmo Shalizi's that uses data from Collier, Paul and Anke Hoeffler (2004). *Greed and Grievance in Civil War.* Oxford Economic Papers, 56: 563–595. URL: http://economics.ouls.ox.ac.uk/12055/1/2002-01text.pdf.
 
