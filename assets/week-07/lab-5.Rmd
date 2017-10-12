@@ -41,14 +41,14 @@ b. What is the CV MSE of this model? How does it compare to the previous one?
 A simple-minded model says that the expected returns over the next ten years should be exactly equal to `1/MAPE`.
 
 a. Find the *training* MSE for this model.
-b. Explain why the training MSE is equivalent the estimate of test MSE that we would
+b. Explain why the training MSE is equivalent to the estimate of the test MSE that we would
 get through five-fold CV.
 
 
 ### 4. Is simple sufficient?
 The model that we fit in no. 2 is very similar to the simple-minded model. Let's compare the similarity in these models. We could go about this in two ways. We could *simulate* from the simple-minded model many times and fit a model of the same form as no. 2 to each one to see if our observed slope in no. 2 is probable under the simple-minded model. We could also *bootstrap* the data set many times, fitting model 2 each time, then see where the simple-minded model lays in that distribution. Since we already have practiced with simulation, let's do the bootstrap method.
 
-a. Form the bootstrap distribution for the slope of `1/MAPE` (slides from last class may be helpful). Plot this distribution with the parameter of interest (the slope corresponding to the simple-minded model) indicated by a vertical line.
+a. Form the bootstrap distribution for the slope of `1/MAPE` (the code from class may be helpful). Plot this distribution with the parameter of interest (the slope corresponding to the simple-minded model) indicated by a vertical line.
 b. What is the approximate 95% bootstrap confidence interval for the slope? How does this interval compare to the one returned by running `confint()` on your model object from question 2? Please explain any difference you've found.
 
 
