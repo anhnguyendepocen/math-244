@@ -1,12 +1,11 @@
 ---
-title: "Lab 5: Resampling"
 output: 
   html_document: 
     highlight: pygments
     theme: spacelab
 ---
 
-### Past Performance, Future Results[^1]
+### Hands off my stack[^1]
 
 Our data set this week looks at the relationship between US stock prices, the earnings of the corporations, and the returns on investment in stocks, with returns counting both changes in stock price and dividends paid to stock holders. A corporation’s **earnings** in a given year is its income minus its expenses. The return on an investment over a year is the fractional change in its value, $(v_{t+1} - v_t)/v_t$, and the average rate of return over $k$ years is $[(v_{t+k} - v_t)/v_t]^{1/k}$.  
 
