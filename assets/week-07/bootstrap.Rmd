@@ -1,0 +1,150 @@
+---
+title: "The Bootstrap"
+output:
+  ioslides_presentation:
+    incremental: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
+##
+
+![bootstrap](http://creativechange.net/wp-content/uploads/2015/12/bootstrap.png)
+
+## The Bootstrap {.build}
+
+A widely applicable and powerful statistical tool used to quantify
+the uncertainty of a given estimate or model.
+
+### Basic Idea
+With a dataset of $n$ obs to which you've fit an estimate $\hat{\theta}$.
+
+1. Draw a bootstrap sample, of size $n$ **with replacement**.
+2. Fit your estimate, $\hat{\theta}^*$ to the bootstrap sample.
+3. Repeat 1-2 many times and assess the variability in your estimate by looking at the *bootstrap distribution*.
+
+
+## Ex: Simple Regression
+
+Is there a relationship between fractionalization and growth?
+
+```{r echo = FALSE, message=FALSE, warning = FALSE}
+war <- read.csv("http://www.stat.cmu.edu/~cshalizi/uADA/15/hw/06/ch.csv")
+
+library(ggplot2)
+ggplot(war, aes(fractionalization, growth)) +
+  geom_point(alpha = .3) +
+  stat_smooth(method = "lm", se = FALSE, col = "orchid")
+m1 <- lm(growth ~ fractionalization, data = war)
+```
+
+
+## Bootstrapping $\hat{\beta}_1$ {.build}
+```{r echo = FALSE, message = FALSE}
+library(dplyr)
+war <- war %>%
+  select(growth, fractionalization) %>%
+  na.omit()
+```
+
+```{r cache=TRUE}
+betas <- rep(NA, 5000)
+for(i in 1:5000) {
+  boot_ind <- sample(1:nrow(war), size = nrow(war), replace = TRUE)
+  war_boot <- war[boot_ind, ]
+  betas[i] <- coef(lm(growth ~ fractionalization, data = war_boot))[2]
+}
+```
+
+```{r echo = FALSE, warning=FALSE, message = FALSE, fig.height=3.2}
+df <- data.frame(betas)
+ggplot(df, aes(betas)) + geom_histogram(col = "white")
+```
+
+
+## Bootstrap distribution
+
+```{r}
+mean(betas)
+sd(betas)
+summary(m1)$coef
+```
+
+
+## A common argument {.build}
+
+*Parametric methods have assumptions that often aren't reasonable, therefore the bootstrap is preferable because it's assumption free.*
+
+The bootstrap requires a sample that captures the important structure in the data. Difficult with small samples of skewed data.
+
+But it sure is flexible . . .
+
+
+## {.build}
+
+Is there a relationship between fractionalization and growth in terms of the **correlation coefficient**?
+
+```{r echo = FALSE, message=FALSE, warning = FALSE, fig.height = 4}
+ggplot(war, aes(fractionalization, growth)) +
+  geom_point(alpha = .3) +
+  stat_smooth(method = "lm", se = FALSE, col = "orchid")
+m1 <- lm(growth ~ fractionalization, data = war)
+```
+
+r = `r round(cor(war$fractionalization, war$growth), digits = 3)`
+
+
+## Bootstrapping $r$ {.build}
+
+```{r cache=TRUE}
+corrs <- rep(NA, 5000)
+for(i in 1:5000) {
+  boot_ind <- sample(1:nrow(war), size = nrow(war), replace = TRUE)
+  war_boot <- war[boot_ind, ]
+  corrs[i] <- cor(war_boot$fractionalization, war_boot$growth)
+}
+```
+
+```{r echo = FALSE, warning=FALSE, message = FALSE, fig.height=3.2}
+df <- data.frame(corrs)
+ggplot(df, aes(corrs)) + geom_histogram(col = "white")
+```
+
+
+## Bootstrapping v. CV {.build .smaller}
+
+Both are computationally intensive methods that involve sampling from your data set to learn more about your estimate/model.
+
+### Cross-validation
+Often used for *model assessment* and *model selection*.
+
+- Partition data into test and train
+- Fit model to train, predict on test
+- Iterate though all possible *folds* (not for VS)
+- Compute aggregate measure of predictive ability
+
+### Bootstrapping
+Often used for quantifying uncertainty.
+
+- Draw a bootstrap sample of size $n$ from your data *with replacement*.
+- Compute estimate of interest
+- Consider distribution of bootstrap estimates over many samples
+
+
+## Activity 1
+
+Take a look at the `law82` dataset inside the `bootstrap` package.
+
+Compute a statistic of interest and construct the bootstrap distribution to find its standard error.
+
+
+
+## Activity 2
+
+Take a look at the `law82` dataset inside the `bootstrap` package.
+
+1. Fit two models, linear and quadratic, to predict `GPA` based on `LSAT`.
+2. Compute the cross-validated MSE for both models using one of the three methods we've discussed.
+3. Bootstrap this statistic to estimate its standard error.
