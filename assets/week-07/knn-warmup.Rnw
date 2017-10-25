@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{enumitem, float}
+\usepackage[margin=1.3in]{geometry}
+
+\begin{document}
+   \begin{center}
+      \large \textsc{Warm-up: KNN}
+   \end{center}
+   
+The table below provides a training data set containing five observations, two numerical predictors, and one categorical response variable.
+
+\begin{center}
+\begin{tabular}{ c | c | c | c }
+  \hline
+  Obs. & $X_1$ & $X_2$ & $Y$ \\
+  \hline
+  1 & 2 & 210 & Orange \\
+  2 & 0 & 90 & Blue \\
+  3 & 1 & -23 & Orange \\
+  4 & 0 & 180 & Blue \\
+  5 & 1.2 & 312 & Orange \\
+  \hline
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+\item Using K Nearest Neighbors with $K = 2$, based on Euclidean distance, predict
+the class of a new test observation with $x_1 = -1; \quad x_2 = 255$. It may be
+helpful to sketch scatterplot of this data.
+\vspace{2.5in}
+
+\item Does this method incorporate the information of each predictor equally? If
+so, how? If not, how would you tweak the method so that it does?
+
+\end{enumerate}
+
+\end{document}
