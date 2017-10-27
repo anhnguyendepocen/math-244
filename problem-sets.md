@@ -14,3 +14,4 @@ work. Problem sets are due in class on **Tuesday**.
 3. [Problem Set 3]({{ site.baseurl }}/assets/week-04/ps-3.html)
 4. [Problem Set 4]({{ site.baseurl }}/assets/week-05/ps-4.html)
 5. [Problem Set 5]({{ site.baseurl }}/assets/week-07/ps-5.html)
+5. [Problem Set 6]({{ site.baseurl }}/assets/week-09/ps-6.html)
