@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{graphicx, color, hyperref, fancyhdr}
+
+%\input{../brayTeachingStyle}
+
+\usepackage[top=.5in, bottom=.5in, left=1.1in, right=1.1in]{geometry}
+\thispagestyle{empty}
+\begin{document}
+
+\begin{center}
+\textsc{Math 243: Statistical Learning} \\
+\noindent\rule{12cm}{0.4pt}
+\end{center}
+
+\subsection*{Trees Quiz}
+
+\begin{enumerate}
+\item Provide a detailed outline of the algorithm used to fit a full regression tree.
+\vspace{110mm}
+
+\item How can \emph{cross-validation} be employed to improve a regression tree?
+\vspace{50mm}
+
+\item How can \emph{bootstrapping} be employed to improve a regression tree?
+\vspace{40mm}
+
+\end{enumerate}
+
+\end{document}
