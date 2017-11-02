@@ -178,21 +178,3 @@ small number of obs.
 4. Use that $\alpha$ to select your best subtree in (2)
 
 # Classification Trees
-
-## Ex. MLB
-
-```{r}
-names(Hitters)
-```
-
-Can we predict the league that a player is in based on his other variables?
-
-
-```{r echo = FALSE}
-library(tree)
-t4 <- tree(League ~. - NewLeague, data = Hitters, split = "gini")
-t5 <- prune.tree(t4, best = 4)
-plot(t5)
-text(t5, pretty = 0)
-```
-
