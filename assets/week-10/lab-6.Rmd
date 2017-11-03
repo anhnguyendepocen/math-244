@@ -5,72 +5,95 @@ output:
     theme: spacelab
 ---
 
-### When a guest arrives they will count how many sides it has on
+<img src="../figs/letters.png" align = "middle"> 
 
-In class, we estimated by eye the first split in a classification tree for the following shapely data set. Now let's check to see if our graphical intuition agrees with that of the full classification tree algorithm.
+### Ransom notes keep falling
 
-```{r, echo = FALSE, fig.height=4.5, fig.width = 4.8, fig.align='center'}
-set.seed(75)
-n <- 16
-x1 <- runif(n)
-x2 <- runif(n)
-group <- as.factor(sample(1:3, n, replace = TRUE))
-levels(group) <- c("circle", "triangle", "square")
-df <- data.frame(x1, x2, group)
-df[1, 2] <- .765 # tweaks to make a more interesting configuration
-df[9, 1] <- .741
-df <- df[-7, ]
+One of the most useful applications to come out of classification models has been character (i.e. letter) recognition. In this lab, we build our own character recognition system using boosted trees.
 
-library(ggplot2)
-ggplot(df, aes(x = x1, y = x2, col = group, shape = group)) +
-  geom_point(size = 4) +
-  scale_x_continuous(expand = c(0, 0) , limits = c(0, 1)) +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) +
-  scale_color_discrete(guide = FALSE) +
-  scale_shape_discrete(guide = FALSE) +
-  theme_bw()
+#### The data
+Our data set consists of a catalog of 20,000 images of letters. They can be loaded in with the following code.
+
+```{r eval = FALSE}
+lettersdf <- read.csv("https://raw.githubusercontent.com/andrewpbray/math-243/master/assets/data/letters.csv", header = FALSE)
 ```
 
-#### 1. Growing the full classification tree
 
-Use the `trees` package in R to fit a full unpruned tree to this data set, making splits based on the *Gini index*. You can find the code to do this in the slides from week 8 or in the lab at the end of Chapter 8 in the book. Please plot the resulting tree.
+Initially, the each image was made up of 45 x 45 pixels, where each was characterized as either "on" or "off" (black or white). In order to extract more meaningful predictors from the data, resesearchers [^1] went through and performed *feature extraction*, collapsing those 2025 dimensions into 16, each of which is a summary statistic calculated on the image. They are as follows:
 
-a. The two most common splits that we saw in class were a horizontal split around $X_2 \approx 0.50$ and a vertical split around $X_1 \approx 0.30$. Was either of these the first split decided upon by your classification tree?
-b. What is the benefit of the second split in the tree?
-c. Which class would this model predict for the new observation with $X_1 = 0.21, X_2 = 0.56$?
+1. (The actual letter that the image corresponds to.)
+2. The horizontal position, counting pixels from the left edge of the image, of the center of the smallest rectangular box that can be drawn with all "on" pixels inside the box.
+3. The vertical position, counting pixels from the bottom, of the above box.
+4. The width, in pixels, of the box.
+5. The height, in pixels, of the box.
+6. The total number of "on" pixels in the character image.
+7. The mean horizontal position of all "on" pixels relative to the center of the box and divided by the width of the box. This feature has a negative value if the image is "left- heavy" as would be the case for the letter L.
+8. The mean vertical position of all "on" pixels relative to the center of the box and divided by the height of the box.
+9. The mean squared value of the horizontal pixel distances as measured in 6 above. This attribute will have a higher value for images whose pixels are more widely separated in the horizontal direction as would be the case for the letters W or M.
+10. The mean squared value of the vertical pixel distances as measured in 7 above.
+11. The mean product of the horizontal and vertical distances for each "on" pixel as measured in 6 and 7 above. This attribute has a positive value for diagonal lines that run from bottom left to top right and a negative value for diagonal lines from top left to bottom right.
+12. The mean value of the squared horizontal distance times the vertical distance for each "on" pixel. This measures the correlation of the horizontal variance with the vertical position.
+13. The mean value of the squared vertical distance times the horizontal distance for each "on" pixel. This measures the correlation of the vertical variance with the horizontal position.
+14. The mean number of edges (an "on" pixel immediately to the right of either an "off" pixel or the image boundary) encountered when making systematic scans from left to right at all vertical positions within the box. This measure distinguishes between letters like "W" or "M" and letters like 'T' or "L."
+15. The sum of the vertical positions of edges encountered as measured in 13 above. This feature will give a higher value if there are more edges at the top of the box, as in the letter "Y."
+16. The mean number of edges (an "on" pixel immediately above either an "off" pixel or the image boundary) encountered when making systematic scans of the image from bottom to top over all horizontal positions within the box.
+17. The sum of horizontal positions of edges encountered as measured in 15 above.
 
-#### 2. An alternate metric
+In addition, each row/image was labeled with the letter that it corresponds to.
 
-Now refit the tree based on the *deviance* as the splitting criterion (you set this as an argument to the `tree()` function). The deviance is defined for the classification setting as:
+You will want to build your model on a training data set and evaluate its performance on a separate test data set. Please use the following indices to subset out the training data set, leaving the remaining as test.
 
-$$ -2 \sum_m \sum_k n_{mk} \log \hat{p}_{mk}$$
+```{r eval = FALSE}
+set.seed(1)
+train <- sample(1:nrow(lettersdf), nrow(letterdf) * .75)
+```
 
-Plot the resulting tree. Why does this tree differ from the tree fit based on the Gini Index?
 
+#### Building a boosted tree
+
+Contruct a boosted tree to predict the class of the training images (the letters) based on its 16 features. This can be done with the `gbm()` function in the library of the same name. Look to the end of chapter 8 for an example of the implementation. Note that we'll be performing a boosted *classification* tree. It's very similar to the boosted regression tree except the method of calculating a residual is adapted to the classification setting. Please use as your model parameters $B = 50$, $\lambda = 0.1$, and $d = 1$. Note that this is computationally intensive, so it may take a minute to run. Which variable is found to be the most important?
+
+
+#### Assessing predictions
+
+Now use this boosted model to predict the classes of the images in the test data set. Use the same number of trees and be sure to add the argument `type = "response"`. The output of this will be a 5000 X 26 X 1 array: for each image you'll have a predicted probability that it is from each of the 26 classes. To extract the vector of length 5000 of each final predicted class, you can use the following function.
+
+```{r eval = FALSE}
+predicted <- LETTERS[apply(yhat, 1, which.max)]
+```
+
+Where `yhat` is the output of the `predict()` function.
+
+a. Build a cross-tabulation of the predicted and actual letters (a 26 X 26 confusion matrix).
+b. What is your misclassification rate? (the function `diag()` might be helpful)
+c. What letter was most difficult to predict?
+d. Are there any letter pairs that are particularly difficult to distinguish?
+
+
+#### Slow the learning
+
+Build a second boosted tree model that uses even *slower* learners, that is, decrease $\lambda$ and increase $B$ somewhat to compensate (the slower the learner, the more of them we need). Pick the parameters of your choosing for this, but be wary of trying to fit a model with too high a $B$. You don't want to wait an hour for your model to fit.
+
+a. How does the misclassification rate compare to the rate from you original model?
+b. Are there any letter pairs that became particularly easier/more difficult to distinguish?
 
 * * *
 
-### Crime and Communities, revisited
+### Communities and Crime
 
-In Lab 3, you fit a regression model to a training data set that predicted the crime rate in a community as a function of properties of that community.
+Return to the Communities and Crime data set. 
 
-#### 3. Growing a pruned regression tree
-Fit a regression tree to the *training* data using the default splitting criteria (here, the deviance is essentially the RSS). Next, perform cost-complexity pruning and generate a plot showing the relationship between tree size and deviance to demonstrate the size of the best tree. Finally, construct the tree diagram for this best tree.
+#### Growing a random forest
 
-#### 4. Comparing predictive performance
-Use this tree to compute the MSE for the *test* data set. How does it compare to the test MSE for your regression model?
+Fit a `randomForest()` model that performs only bagging and no actual random forests (recall that bagging is the special case of random forests with $m = p$
+). Next, fit a second random forest model that uses $m = p/3$. Compute their test MSEs. How much improvement do we get by using the random forests mechanism? Does it out-perform your regression model?
 
-#### 5. Growing a random forest
-We now apply methods to decrease the variance of our estimates. Fit a `randomForest()` model that performs only bagging and no actual random forests (recall that bagging is the special case of random forests with $m = p$). Next, fit a second random forest model that uses $m = p/3$. Compute their test MSEs. Is this an improvement over the vanilla pruned regression tree? Does it beat your regression model?
+#### Variance importance
 
-#### 6. Variance importance
-One thing we lose by using these computational techniques to limit the variance is the clearly interpretable tree diagram. We can still salvage some interpretability by considering `importance()`. Please construct a Variable Importance Plot (`varImpPlot()`). Are these restults similar/different from your interpretation of your regression coefficients in Lab 3?
+One thing we lose by using these computational techniques to limit the variance is the clearly interpretable tree diagram. We can still salvage some interpretability by considering `importance()`. Please construct a Variable Importance Plot (`varImpPlot()`). Are these results similar/different from your interpretation of your regression coefficients in Lab 3? 
 
+#### One last boost
 
-* * *
+Construct a model based on a boosted tree with parameters of your choosing. How does the test MSE compare to your existing models?
 
-
-### Two Cultures
-
-One of the most influential papers in statistical learning was written by Leo Breiman, who did much of the groundbreaking work with trees: [Statistical Modeling: The Two Cultures](http://projecteuclid.org/download/pdf_1/euclid.ss/1009213726) (*Statistical Science*, 2001, Vol. 16, No. 3, 199–231). Please start reading this paper for discussion in class.
-
+[^1]: P. W. Frey and D. J. Slate. "Letter Recognition Using Holland-style Adaptive Classifiers". (Machine Learning Vol 6 #2 March 91) 
