@@ -17,5 +17,5 @@ and using your college login.
 2. <a href = "{{ site.baseurl }}/assets/week-02/lab-2.html" target = "_blank">Simple Regression and Simulation</a>
 3. <a href = "{{ site.baseurl }}/assets/week-03/lab-3.html" target = "_blank">Regression Competition</a>
 4. <a href = "{{ site.baseurl }}/assets/week-06/lab-4.html" target = "_blank">Classification</a>
-5. <a href = "{{ site.baseurl }}/assets/week-07/lab-5.html" target = "_blank">Resampling/a>
-6. <a href = "{{ site.baseurl }}/assets/week-010/lab-6.html" target = "_blank">Trees/a>
+5. <a href = "{{ site.baseurl }}/assets/week-07/lab-5.html" target = "_blank">Resampling</a>
+6. <a href = "{{ site.baseurl }}/assets/week-010/lab-6.html" target = "_blank">Trees</a>
