@@ -154,7 +154,8 @@ $(document).ready(function () {
 <div id="the-data" class="section level4">
 <h4>The data</h4>
 <p>Our data set consists of a catalog of 20,000 images of letters. They can be loaded in with the following code.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lettersdf &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/andrewpbray/math-243/master/assets/data/letters.csv&quot;</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lettersdf &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/andrewpbray/math-243/master/assets/data/letters.csv&quot;</span>,
+                      <span class="dt">header =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p>Initially, the each image was made up of 45 x 45 pixels, where each was characterized as either “on” or “off” (black or white). In order to extract more meaningful predictors from the data, resesearchers <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> went through and performed <em>feature extraction</em>, collapsing those 2025 dimensions into 16, each of which is a summary statistic calculated on the image. They are as follows:</p>
 <ol style="list-style-type: decimal">
 <li>(The actual letter that the image corresponds to.)</li>

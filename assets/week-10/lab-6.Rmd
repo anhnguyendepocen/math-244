@@ -15,7 +15,8 @@ One of the most useful applications to come out of classification models has bee
 Our data set consists of a catalog of 20,000 images of letters. They can be loaded in with the following code.
 
 ```{r eval = FALSE}
-lettersdf <- read.csv("https://raw.githubusercontent.com/andrewpbray/math-243/master/assets/data/letters.csv", header = FALSE)
+lettersdf <- read.csv("https://raw.githubusercontent.com/andrewpbray/math-243/master/assets/data/letters.csv",
+                      header = FALSE)
 ```
 
 
