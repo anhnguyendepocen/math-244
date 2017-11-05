@@ -87,7 +87,14 @@ Return to the Communities and Crime data set.
 #### Growing a random forest
 
 Fit a `randomForest()` model that performs only bagging and no actual random forests (recall that bagging is the special case of random forests with $m = p$
-). Next, fit a second random forest model that uses $m = p/3$. Compute their test MSEs. How much improvement do we get by using the random forests mechanism? Does it out-perform your regression model?
+). Next, fit a second random forest model that uses $m = p/3$. Compute their test MSEs based on the test data set here:
+
+```{r}
+crime_test <- read.csv("https://www.dropbox.com/s/ac5uwzsed985lfv/crime-test.csv?dl=1")
+```
+
+
+How much improvement do we get by using the random forests mechanism? Does it out-perform your regression model?
 
 #### Variance importance
 
