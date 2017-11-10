@@ -1,0 +1,187 @@
+---
+title: "Principle Component Analysis III"
+output:
+  ioslides_presentation:
+    incremental: true
+---
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+## Handwritten Letters {.build}
+
+```{r echo = FALSE, fig.width = 5, fig.height = 5}
+source("https://raw.githubusercontent.com/andrewpbray/math-243/gh-pages/assets/week-10/pca-code.R")
+```
+
+```{r fig.width=4, fig.align='center'}
+g_data <- d[d$letter == "g", ]
+plot_letter(g_data[19, ])
+```
+
+## Mean letter
+
+```{r fig.width=4, fig.align='center'}
+g_mean <- colSums(g_data[, -1])/nrow(g_data)
+plot_letter(g_mean, hasletter = FALSE)
+```
+
+
+## Dimension reduction
+
+Can we capture most of the structure in a smaller number of dimensions?
+
+$$m < p ?$$
+
+
+## Plotting the PCs
+
+```{r echo = TRUE}
+pca1 <- prcomp(g_data[, -1])
+d <- as.data.frame(pca1$x)
+library(ggplot2)
+p1 <- ggplot(d, aes(x = PC1, y = PC2)) +
+  geom_point(alpha = .4)
+```
+
+
+## Plotting the PCs
+
+```{r echo = FALSE, fig.width=5, fig.align='center'}
+p1
+```
+
+
+## Scree plot {.build}
+
+Used to visualize the proportion of variance explained (PVE) by each PC.
+
+```{r echo = FALSE}
+d <- data.frame(PC = 1:20,
+                PVE = pca1$sdev[1:20]^2 / sum(pca1$sdev[1:20]^2))
+p2 <- ggplot(d, aes(x = PC, y = PVE)) +
+  geom_line() + 
+  geom_point()
+```
+
+## Scree plot
+
+```{r echo = FALSE}
+p2
+```
+
+
+## Scree plot {.build}
+A good amount of the structure in the data resides in the first 4 PCs (PVE: `r sum(d$PVE[1:4])`)
+
+But what do these PCs actually mean?
+
+
+##
+
+```{r echo = FALSE, fig.width=5, fig.align='center'}
+grid_points <- as.matrix(expand.grid(seq(-1.5, 1.5, length.out = 5), seq(-1.5, 1.5, length.out = 5)))
+pc_points <- pca1$x[, 1:2]
+
+nearest_ind <- rep(NA, nrow(grid_points))
+for(i in 1:nrow(grid_points)) {
+  gp <- matrix(rep(grid_points[i, ], nrow(pc_points)), ncol = 2, byrow = TRUE)
+  nearest_ind[i] <- which.min(rowSums((pc_points - gp)^2))
+}
+
+nearest_grid <- data.frame(pc_points[nearest_ind, ])
+grid_points <- data.frame(grid_points)
+names(grid_points) <- c("PC1", "PC2")
+
+p1 + 
+  geom_point(data = nearest_grid, aes(x = PC1, y = PC2), col = "blue")
+```
+
+## 
+
+```{r, echo = FALSE, fig.width=5, fig.align='center', warning=FALSE}
+pc_grid(pca1, g_data)
+```
+
+
+## What do the PCs mean? {.build}
+
+Difficult to tell due to
+
+- Low resolution
+- Lots of information to synthesize
+
+But there is another way to learn about these first two PCs...
+
+#
+
+## Practice
+
+1. Extract the loadings (`rotation`) from your PCA object and used `plot_letter()` to plot your first several PCs. What variation they seem to be capturing?
+2. Generate a 5x5 plot of the images of letters sampled from a regular grid across the first two PCs (use `pc_grid()` in the updated code file from last class.) Do these conform with the direct images of the loadings?
+
+## 
+
+First, reset graphical parameters.
+
+```{r fig.width=4, fig.align='center'}
+dev.off()
+```
+
+##
+
+```{r fig.width=5, fig.align='center'}
+plot_letter(pca1$rotation[, 1], hasletter = FALSE)
+```
+
+## {.build}
+
+```{r fig.width=5, fig.align='center'}
+plot_letter(pca1$rotation[, 2], hasletter = FALSE)
+```
+
+## {.build}
+
+```{r fig.width=5, fig.align='center'}
+pc_grid(pca1, g_data)
+```
+
+#
+
+## Image reconstruction
+
+Use the first two principle components to reconstruct (and visualize) the first two letters in your data set. For each letter, plot the true image and the reconstructed image on the sampe plot. How much information was lost?
+
+## 
+
+```{r}
+phi <- pca1$rotation
+z <- pca1$x
+x_star1 <- g_mean + phi[, 1] * z[1, 1] + phi[, 2] * z[1, 2]
+x_star2 <- g_mean + phi[, 1] * z[2, 1] + phi[, 2] * z[2, 2]
+```
+
+##
+```{r eval = FALSE}
+par(mfrow = c(2, 2), mar = rep(0, 4))
+plot_letter(x_star1, hasletter = FALSE)
+plot_letter(g_data[1,], hasletter = TRUE)
+plot_letter(x_star2, hasletter = FALSE)
+plot_letter(g_data[2,], hasletter = TRUE)
+```
+
+##
+```{r echo = FALSE, fig.width=6, fig.height=6, fig.align='center'}
+par(mfrow = c(2, 2))
+par(mfrow = c(2, 2), mar = rep(0, 4))
+plot_letter(x_star1, hasletter = FALSE)
+plot_letter(g_data[1,], hasletter = TRUE)
+plot_letter(x_star2, hasletter = FALSE)
+plot_letter(g_data[2,], hasletter = TRUE)
+```
+
+
+
+
