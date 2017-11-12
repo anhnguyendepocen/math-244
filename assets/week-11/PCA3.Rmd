@@ -10,31 +10,66 @@ library(knitr)
 opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
+## Principle Component Analysis (PCA) {.build}
+
+Produces a low-dimensional representation of a dataset. It finds a sequence of linear combinations of the variables that have maximal variance and are mutually uncorrelated.
+
+Used to:
+
+- Visualize structure in data
+- Learn about latent meta-variables
+- Produce imputs for subsequent supervised learning
+
+
 ## Handwritten Letters {.build}
 
-```{r echo = FALSE, fig.width = 5, fig.height = 5}
-source("https://raw.githubusercontent.com/andrewpbray/math-243/gh-pages/assets/week-10/pca-code.R")
+```{r echo = FALSE, eval = FALSE}
+d <- read.delim("../data/handwritten-raw.txt", header = FALSE)
+library(dplyr)
+d2 <- d %>%
+  select(-V1, -V3, -V4, -V5, -V6, -V135)
+ind <- c(1:8,
+         1:8 + 16,
+         1:8 + 32,
+         1:8 + 48,
+         1:8 + 64,
+         1:8 + 80,
+         1:8 + 96,
+         1:8 + 112) + 1
+d4 <- d2[, c(1, ind)]
+names(d4)[1] <- "letter" 
+
+write.csv(d4, file = "../data/handwritten.csv", row.names = FALSE)
 ```
 
-```{r fig.width=4, fig.align='center'}
-g_data <- d[d$letter == "g", ]
-plot_letter(g_data[19, ])
+<img src="../figs/some-letters.png" width = 500>
+
+How much information is encoded in a 8 x 8 image of a handwritten letters?
+
+```{r echo = FALSE, fig.width = 5, fig.height = 5}
+source("https://raw.githubusercontent.com/andrewpbray/math-243/master/assets/week-11/pca-code.R")
+
+library(dplyr)
+g_data <- d %>%
+  filter(letter == "g")
+
+plot_letter <- function(x, hasletter = TRUE) {
+  if(hasletter) {
+    a <- as.numeric(x[, -1])
+  }else{a <- as.numeric(x)}
+  m <- matrix(a, nrow = 8, byrow = TRUE)
+  m <- t(apply(m, 2, rev)) # rotate matrix
+  image(m, axes = FALSE, col = rev(grey(seq(0, 1, length = 256))))
+  box()
+}
 ```
 
 ## Mean letter
 
-```{r fig.width=4, fig.align='center'}
+```{r}
 g_mean <- colSums(g_data[, -1])/nrow(g_data)
 plot_letter(g_mean, hasletter = FALSE)
 ```
-
-
-## Dimension reduction
-
-Can we capture most of the structure in a smaller number of dimensions?
-
-$$m < p ?$$
-
 
 ## Plotting the PCs
 
@@ -52,32 +87,6 @@ p1 <- ggplot(d, aes(x = PC1, y = PC2)) +
 ```{r echo = FALSE, fig.width=5, fig.align='center'}
 p1
 ```
-
-
-## Scree plot {.build}
-
-Used to visualize the proportion of variance explained (PVE) by each PC.
-
-```{r echo = FALSE}
-d <- data.frame(PC = 1:20,
-                PVE = pca1$sdev[1:20]^2 / sum(pca1$sdev[1:20]^2))
-p2 <- ggplot(d, aes(x = PC, y = PVE)) +
-  geom_line() + 
-  geom_point()
-```
-
-## Scree plot
-
-```{r echo = FALSE}
-p2
-```
-
-
-## Scree plot {.build}
-A good amount of the structure in the data resides in the first 4 PCs (PVE: `r sum(d$PVE[1:4])`)
-
-But what do these PCs actually mean?
-
 
 ##
 
@@ -101,7 +110,7 @@ p1 +
 
 ## 
 
-```{r, echo = FALSE, fig.width=5, fig.align='center', warning=FALSE}
+```{r, echo = FALSE, eval = FALSE, fig.width=4, fig.align='center', warning=FALSE}
 pc_grid(pca1, g_data)
 ```
 
@@ -144,7 +153,7 @@ plot_letter(pca1$rotation[, 2], hasletter = FALSE)
 
 ## {.build}
 
-```{r fig.width=5, fig.align='center'}
+```{r eval = FALSE, fig.width=5, fig.align='center'}
 pc_grid(pca1, g_data)
 ```
 
@@ -181,7 +190,4 @@ plot_letter(g_data[1,], hasletter = TRUE)
 plot_letter(x_star2, hasletter = FALSE)
 plot_letter(g_data[2,], hasletter = TRUE)
 ```
-
-
-
 
