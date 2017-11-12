@@ -1,0 +1,64 @@
+---
+layout: page
+title: Problem Set 7
+permalink: /problem-sets/
+published: FALSE
+output: 
+  html_document: 
+    highlight: pygments
+    theme: spacelab
+---
+
+### Part I
+
+Propose two potential projects for the group project in the form of two abstracts that detail the data set, the research question, and an anticipation of the methods used. Please bring this as a hard copy to class on Tuesday.
+
+### Part II
+
+The following questions are based on the activity in class last week. They depend on the handwritten data set and custom functions that can be brought in by running the following code:
+
+```{r eval = FALSE}
+source("https://raw.githubusercontent.com/andrewpbray/math-243/master/assets/week-11/pca-code.R")
+```
+
+
+1. What do the columns and rows appear to represent in this dataset?
+2. Select a letter of the alphabet and create a new dataset that includes only the images of that letter.
+3. Visualize a few of those images using `plot_letter()` function.
+4. Compute the *mean* image for that letter and visualize it.
+5. Perform PCA on your data set using the `prcomp()` function.
+6. Construct a scree plot showing the PVE for the first 20 PCs. How many dimensions are needed to capture most of the structure in this letter?
+7. Select a second letter, perform PCA, and construct a second scree plot. How many dimensions are needed to capture most of the structure in this letter?
+8. Returning to your first letter, make a scatterplot of the data plotted on the first two principle components. In this scatterplot, each dot will be an image of a letter and the axes will be $Z_1$ and $Z_2$.
+9. Let's try to build a sense of what the first two principle components are encoding by considering the letters that appear in different parts of this plot. The `pc_grid()` function overlay a 5x5 grid on your scatterplot like this.
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+source("https://raw.githubusercontent.com/andrewpbray/math-243/master/assets/week-11/pca-code.R")
+
+g_data <- d %>%
+  filter(letter == "g")
+
+pca1 <- prcomp(g_data[, -1])
+d <- as.data.frame(pca1$x)
+p1 <- ggplot(d, aes(x = PC1, y = PC2)) +
+  geom_point(alpha = .4)
+
+grid_points <- as.matrix(expand.grid(seq(-1.5, 1.5, length.out = 5), seq(-1.5, 1.5, length.out = 5)))
+pc_points <- pca1$x[, 1:2]
+
+nearest_ind <- rep(NA, nrow(grid_points))
+for(i in 1:nrow(grid_points)) {
+  gp <- matrix(rep(grid_points[i, ], nrow(pc_points)), ncol = 2, byrow = TRUE)
+  nearest_ind[i] <- which.min(rowSums((pc_points - gp)^2))
+}
+
+nearest_grid <- data.frame(pc_points[nearest_ind, ])
+grid_points <- data.frame(grid_points)
+names(grid_points) <- c("PC1", "PC2")
+
+p1 + 
+  geom_point(data = nearest_grid, aes(x = PC1, y = PC2), col = "red", size = 3)
+```
+
+It will then select the images that are nearest to the red points and plot them. Run `pc_grid()` on your pca object and the original data and describe the structure in the letters (the meta-variable if you will) that each PC is capturing.
