@@ -194,15 +194,6 @@ pca1$rotation
 biplot(pca1)
 ```
 
-#
-
-## Interpretation {.build}
-
-```{r}
-pca1$rotation
-names(pca1)
-pca1$sdev
-```
 
 ## Constructing a scree plot {.build}
 

@@ -10,97 +10,6 @@ library(knitr)
 opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
-
-## Ex. More Crime {.build}
-
-This data set contains statistics, in arrests per 100,000 residents for assault, murder, and rape in each of the 50 US states in 1973. Also given is the percent of the population living in urban areas.
-
-```{r}
-head(USArrests)
-```
-
-
-## PCA {.build}
-
-```{r}
-pca1 <- prcomp(USArrests, scale = TRUE)
-names(pca1)
-```
-
-- `rotation` holds the matrix of loadings; the $\phi$'s.
-- `x` holds the scores for the principle components; the $z_{ij}$.
-
-## Interpretation {.build}
-
-```{r}
-pca1$rotation
-```
-
-- PC1: crime
-- PC2: urbanization
-
-##
-
-```{r echo = FALSE, fig.height=5, fig.width = 5, fig.align='center'}
-library(ggplot2)
-d <- as.data.frame(pca1$x)
-d$state <- row.names(d)
-p1 <- ggplot(d, aes(x = PC1, y = PC2)) +
-  geom_point() +
-  geom_text(aes(label = state), position = position_nudge(y = -0.1))
-p1
-```
-
-
-## Biplot
-
-```{r echo = FALSE}
-biplot(pca1)
-```
-
-
-## Interpretation {.build}
-
-```{r}
-pca1$rotation
-names(pca1)
-pca1$sdev
-```
-
-## Constructing a scree plot {.build}
-
-Used to visualize the proportion of variance explained (PVE) by each PC.
-
-```{r eval = FALSE}
-d <- data.frame(PC = 1:4,
-                PVE = pca1$sdev^2 / sum(pca1$sdev^2))
-ggplot(d, aes(x = PC, y = PVE)) +
-  geom_line() + 
-  geom_point()
-```
-
-## Scree plot
-
-```{r echo = FALSE}
-d <- data.frame(PC = 1:4,
-                PVE = pca1$sdev^2 / sum(pca1$sdev^2))
-ggplot(d, aes(x = PC, y = PVE)) +
-  geom_line() + 
-  geom_point()
-```
-
-## How many PCs? {.build}
-
-- 1st PC: 62% PVE
-- 1st + 2nd PC: 62 + 25 = 87% PVE
-
-Usually most of the structure is in the first several principal components, but results may vary!
-
-*Rule of thumb*: look for the elbow in the scree plot.
-
-
-#
-
 ## Principle Component Analysis (PCA) {.build}
 
 Produces a low-dimensional representation of a dataset. It finds a sequence of linear combinations of the variables that have maximal variance and are mutually uncorrelated.
@@ -146,10 +55,10 @@ Find the code to download the handwritten data set on the website under Week 10.
 3. Visualize a few of those images using `plot_letter()` function.
 4. Compute the *mean* image for that letter and visualize it.
 
-##
+## Plot letter
 
 ```{r echo = FALSE, fig.width = 5, fig.height = 5}
-d <- read.csv("../data/handwritten.csv")
+source("https://raw.githubusercontent.com/andrewpbray/math-243/master/assets/week-11/pca-code.R")
 
 library(dplyr)
 g_data <- d %>%
@@ -167,6 +76,11 @@ plot_letter <- function(x, hasletter = TRUE) {
 
 plot_letter(g_data[19, ])
 
+```
+
+## Mean letter
+
+```{r}
 g_mean <- colSums(g_data[, -1])/nrow(g_data)
 plot_letter(g_mean, hasletter = FALSE)
 ```
@@ -183,25 +97,149 @@ slides from last time).
 2. Construct a scree plot showing the PVE for the first 20 PCs.
 
 
-##
+## Plotting the PCs
 
-```{r echo = FALSE}
+```{r echo = TRUE}
 pca1 <- prcomp(g_data[, -1])
 d <- as.data.frame(pca1$x)
+library(ggplot2)
 p1 <- ggplot(d, aes(x = PC1, y = PC2)) +
-  geom_point()
+  geom_point(alpha = .4)
+```
+
+
+## Plotting the PCs
+
+```{r echo = FALSE, fig.width=5, fig.align='center'}
 p1
 ```
 
 
-## 
+## Scree plot {.build}
+
+Used to visualize the proportion of variance explained (PVE) by each PC.
+
 ```{r echo = FALSE}
 d <- data.frame(PC = 1:20,
                 PVE = pca1$sdev[1:20]^2 / sum(pca1$sdev[1:20]^2))
-ggplot(d, aes(x = PC, y = PVE)) +
+p2 <- ggplot(d, aes(x = PC, y = PVE)) +
   geom_line() + 
   geom_point()
 ```
 
+## Scree plot
 
+```{r echo = FALSE}
+p2
+```
+
+
+## Scree plot {.build}
+A good amount of the structure in the data resides in the first 4 PCs (PVE: `r sum(d$PVE[1:4])`)
+
+But what do these PCs actually mean?
+
+
+##
+
+```{r echo = FALSE, fig.width=5, fig.align='center'}
+grid_points <- as.matrix(expand.grid(seq(-1.5, 1.5, length.out = 5), seq(-1.5, 1.5, length.out = 5)))
+pc_points <- pca1$x[, 1:2]
+
+nearest_ind <- rep(NA, nrow(grid_points))
+for(i in 1:nrow(grid_points)) {
+  gp <- matrix(rep(grid_points[i, ], nrow(pc_points)), ncol = 2, byrow = TRUE)
+  nearest_ind[i] <- which.min(rowSums((pc_points - gp)^2))
+}
+
+nearest_grid <- data.frame(pc_points[nearest_ind, ])
+grid_points <- data.frame(grid_points)
+names(grid_points) <- c("PC1", "PC2")
+
+p1 + 
+  geom_point(data = nearest_grid, aes(x = PC1, y = PC2), col = "blue")
+```
+
+## 
+
+```{r, echo = FALSE, eval = FALSE, fig.width=4, fig.align='center', warning=FALSE}
+pc_grid(pca1, g_data)
+```
+
+
+## What do the PCs mean? {.build}
+
+Difficult to tell due to
+
+- Low resolution
+- Lots of information to synthesize
+
+But there is another way to learn about these first two PCs...
+
+#
+
+## Practice
+
+1. Extract the loadings (`rotation`) from your PCA object and used `plot_letter()` to plot your first several PCs. What variation they seem to be capturing?
+2. Generate a 5x5 plot of the images of letters sampled from a regular grid across the first two PCs (use `pc_grid()` in the updated code file from last class.) Do these conform with the direct images of the loadings?
+
+## 
+
+First, reset graphical parameters.
+
+```{r fig.width=4, fig.align='center'}
+dev.off()
+```
+
+##
+
+```{r fig.width=5, fig.align='center'}
+plot_letter(pca1$rotation[, 1], hasletter = FALSE)
+```
+
+## {.build}
+
+```{r fig.width=5, fig.align='center'}
+plot_letter(pca1$rotation[, 2], hasletter = FALSE)
+```
+
+## {.build}
+
+```{r eval = FALSE, fig.width=5, fig.align='center'}
+pc_grid(pca1, g_data)
+```
+
+#
+
+## Image reconstruction
+
+Use the first two principle components to reconstruct (and visualize) the first two letters in your data set. For each letter, plot the true image and the reconstructed image on the sampe plot. How much information was lost?
+
+## 
+
+```{r}
+phi <- pca1$rotation
+z <- pca1$x
+x_star1 <- g_mean + phi[, 1] * z[1, 1] + phi[, 2] * z[1, 2]
+x_star2 <- g_mean + phi[, 1] * z[2, 1] + phi[, 2] * z[2, 2]
+```
+
+##
+```{r eval = FALSE}
+par(mfrow = c(2, 2), mar = rep(0, 4))
+plot_letter(x_star1, hasletter = FALSE)
+plot_letter(g_data[1,], hasletter = TRUE)
+plot_letter(x_star2, hasletter = FALSE)
+plot_letter(g_data[2,], hasletter = TRUE)
+```
+
+##
+```{r echo = FALSE, fig.width=6, fig.height=6, fig.align='center'}
+par(mfrow = c(2, 2))
+par(mfrow = c(2, 2), mar = rep(0, 4))
+plot_letter(x_star1, hasletter = FALSE)
+plot_letter(g_data[1,], hasletter = TRUE)
+plot_letter(x_star2, hasletter = FALSE)
+plot_letter(g_data[2,], hasletter = TRUE)
+```
 
