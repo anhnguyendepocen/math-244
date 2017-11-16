@@ -64,33 +64,14 @@ plot_letter <- function(x, hasletter = TRUE) {
 }
 ```
 
-## Mean letter
-
-```{r}
-g_mean <- colSums(g_data[, -1])/nrow(g_data)
-plot_letter(g_mean, hasletter = FALSE)
-```
-
 ## Plotting the PCs
 
-```{r echo = TRUE}
+```{r echo = FALSE, fig.width=5, fig.align='center'}
 pca1 <- prcomp(g_data[, -1])
 d <- as.data.frame(pca1$x)
 library(ggplot2)
 p1 <- ggplot(d, aes(x = PC1, y = PC2)) +
   geom_point(alpha = .4)
-```
-
-
-## Plotting the PCs
-
-```{r echo = FALSE, fig.width=5, fig.align='center'}
-p1
-```
-
-##
-
-```{r echo = FALSE, fig.width=5, fig.align='center'}
 grid_points <- as.matrix(expand.grid(seq(-1.5, 1.5, length.out = 5), seq(-1.5, 1.5, length.out = 5)))
 pc_points <- pca1$x[, 1:2]
 
@@ -111,8 +92,12 @@ p1 +
 ## 
 
 ```{r, echo = FALSE, eval = FALSE, fig.width=4, fig.align='center', warning=FALSE}
+dev.off()
+png("letter_grid.png", height = 1500, width = 1500)
 pc_grid(pca1, g_data)
+dev.off()
 ```
+<img src="../figs/letter_grid.png" width = 500>
 
 
 ## What do the PCs mean? {.build}
@@ -128,16 +113,10 @@ But there is another way to learn about these first two PCs...
 
 ## Practice
 
+(Please add these answers to your problem set)
+
 1. Extract the loadings (`rotation`) from your PCA object and used `plot_letter()` to plot your first several PCs. What variation they seem to be capturing?
-2. Generate a 5x5 plot of the images of letters sampled from a regular grid across the first two PCs (use `pc_grid()` in the updated code file from last class.) Do these conform with the direct images of the loadings?
-
-## 
-
-First, reset graphical parameters.
-
-```{r fig.width=4, fig.align='center'}
-dev.off()
-```
+2. Do these loadings conform with variation seen across the 5x5 grid of letters across the first two PCs?
 
 ##
 
@@ -153,36 +132,41 @@ plot_letter(pca1$rotation[, 2], hasletter = FALSE)
 
 ## {.build}
 
-```{r eval = FALSE, fig.width=5, fig.align='center'}
-pc_grid(pca1, g_data)
-```
+<img src="../figs/letter_grid.png" width = 500>
 
 #
 
 ## Image reconstruction
 
-Use the first two principle components to reconstruct (and visualize) the first two letters in your data set. For each letter, plot the true image and the reconstructed image on the sampe plot. How much information was lost?
+Use the first ten principle components to reconstruct (and visualize) the first observation of each of the two letters that you studied. For each letter, plot the true image and the reconstructed image on the sampe plot. How much information was lost?
 
 ## 
 
-```{r}
+```{r eval = FALSE}
+g_mean <- colMeans(g_data[ , -1])
 phi <- pca1$rotation
 z <- pca1$x
-x_star1 <- g_mean + phi[, 1] * z[1, 1] + phi[, 2] * z[1, 2]
-x_star2 <- g_mean + phi[, 1] * z[2, 1] + phi[, 2] * z[2, 2]
+ncomp <- 10
+x_star1 <- z[1, 1:ncomp] %*% t(phi[, 1:ncomp]) + g_mean
+x_star2 <- z[2, 1:ncomp] %*% t(phi[, 1:ncomp]) + g_mean
+#x_star1 <- g_mean + phi[, 1] * z[1, 1] + phi[, 2] * z[1, 2]
+#x_star2 <- g_mean + phi[, 1] * z[2, 1] + phi[, 2] * z[2, 2]
 ```
 
 ##
-```{r eval = FALSE}
-par(mfrow = c(2, 2), mar = rep(0, 4))
-plot_letter(x_star1, hasletter = FALSE)
-plot_letter(g_data[1,], hasletter = TRUE)
-plot_letter(x_star2, hasletter = FALSE)
-plot_letter(g_data[2,], hasletter = TRUE)
+```{r echo = FALSE}
+g_mean <- colMeans(g_data[ , -1])
+phi <- pca1$rotation
+z <- pca1$x
+ncomp <- 63
+x_star1 <- g_mean + z[1, 1:ncomp] %*% t(phi[, 1:ncomp])
+x_star2 <- g_mean + z[2, 1:ncomp] %*% t(phi[, 1:ncomp])
+#x_star1 <- g_mean + phi[, 1] * z[1, 1] + phi[, 2] * z[1, 2]
+#x_star2 <- g_mean + phi[, 1] * z[2, 1] + phi[, 2] * z[2, 2]
 ```
 
 ##
-```{r echo = FALSE, fig.width=6, fig.height=6, fig.align='center'}
+```{r eval = TRUE, echo = FALSE, fig.width=6, fig.height=6, fig.align='center'}
 par(mfrow = c(2, 2))
 par(mfrow = c(2, 2), mar = rep(0, 4))
 plot_letter(x_star1, hasletter = FALSE)

@@ -62,3 +62,8 @@ p1 +
 ```
 
 It will then select the images that are nearest to the red points and plot them. Run `pc_grid()` on your pca object and the original data and describe the structure in the letters (the meta-variable if you will) that each PC is capturing.
+
+### Part III
+1. Extract the loadings (`rotation`) from your PCA object and used `plot_letter()` to plot your first two PCs. What variation they seem to be capturing?
+2. Do these loadings conform with variation seen across the 5x5 grid of letters across the first two PCs?
+3. Use the first ten principle components to reconstruct (and visualize) the first observation of each of the two letters that you studied. For each letter, plot the true image and the reconstructed image on the sampe plot. On visual inspection, how much information was lost?
