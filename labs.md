@@ -4,7 +4,7 @@ title: Labs
 permalink: /labs/
 ---
 
-We dedicate every Friday to gaining experience with these methods and
+We dedicate labs to gaining experience with these methods and
 concepts in a computing environment. Our tool of choice will be R, software that
 vastly amplifies your power to explore, visualize, and model data. Reed's RStudio
 server is accessible by going to [https://rstudio.reed.edu/](https://rstudio.reed.edu/) 
@@ -19,3 +19,4 @@ and using your college login.
 4. <a href = "{{ site.baseurl }}/assets/week-06/lab-4.html" target = "_blank">Classification</a>
 5. <a href = "{{ site.baseurl }}/assets/week-07/lab-5.html" target = "_blank">Resampling</a>
 6. <a href = "{{ site.baseurl }}/assets/week-10/lab-6.html" target = "_blank">Trees</a>
+7. <a href = "{{ site.baseurl }}/assets/week-12/lab-7.html" target = "_blank">Clustering</a>
